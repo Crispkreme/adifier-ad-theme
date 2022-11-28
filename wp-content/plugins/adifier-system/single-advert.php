@@ -267,62 +267,101 @@ ob_end_clean();
 					</div>
 
 					<div class="white-block-content">
-						<form action="" id="adifier-clients-info" method="POST" action="">
+						<form id="adifier_clients_info" method="POST" action="#" data-url="<?php echo admin_url('admin-ajax.php'); ?>" enctype="multipart/form-data">
 							<div class="form-group">
 								<label for="pin">Complete Name</label>
-								<input type="text" name="client_name" class="form-control" id="pin" aria-describedby="fullnameHelp" placeholder="Enter Fullname">
+								<input type="text" name="client_name" class="form-control" id="client_name" aria-describedby="fullnameHelp" placeholder="Enter Fullname">
 								<small id="fullnameHelp" class="form-text text-muted">Your Complete Name</small>
 							</div>
 							<div class="form-group">
 								<label for="pin">Email</label>
-								<input type="text" name="client_email" class="form-control" id="pin" aria-describedby="emailHelp" placeholder="Enter email">
+								<input type="text" name="client_email" class="form-control" id="client_email" aria-describedby="emailHelp" placeholder="Enter email">
 							</div>
 							<div class="form-group">
 								<label for="pin">Address</label>
-								<textarea class="form-control" name="client_address" id="pin" aria-describedby="addressHelp" name="" cols="30" placeholder="Complete Address"></textarea>
+								<textarea class="form-control" name="client_address" id="client_address" aria-describedby="addressHelp" name="" cols="30" placeholder="Complete Address"></textarea>
 							</div>
-							<input type="hidden" name="action" value="adifier_create_client_info">
 							<button type="submit" class="btn btn-primary">Submit</button>
 						</form>
 					</div>
 					<script type="text/javascript">
-						// jQuery(document).ready(function($) {
-						// 	$('#adifier-clients-info').ajaxForm({
-
-						// 	});
-						// });
-						
-						// function postAdifierClientInfo(response) { 
-						// 	console.log('response')
-						// }
-
-						// jQuery(document).ready(function($) { 
-						// 	// bind 'myForm' and provide a simple callback function 
-						// 	$('#adifier-clients-info').ajaxForm(function() { 
-						// 		// alert(response); 
-						// 		success: function postAdifierSuccessClientInfo(response) {
-						// 			console.log(response);
-						// 		}
-						// 		error: function postAdifierErrorClientInfo(response) {
-						// 			console.log(response);
-						// 		}
-						// 		resetForm: true
-						// 	}); 
-						// }); 
-
 						jQuery(document).ready(function($){
-							$("form#adifier-clients-info").submit(function(event) {
+							$("#adifier_clients_info").on("submit", function (event) {
+
 								event.preventDefault();
-								var input = $("#pin");
+
+								var form= $(this);
+								var ajaxurl = form.data("data-url");
+
+								var client_info = {
+									client_name: form.find("#client_name").val(),
+									client_email: form.find("#client_email").val(),
+									client_address: form.find("#client_address").val(),
+								}
+
+								if(client_info.client_name === "" || client_info.client_email === "" || client_info.client_address === "") {
+									alert("Fields cannot be blank");
+									return;
+								}
 
 								$.ajax({
-									type: "POST",
-									url: "<?php echo admin_url('admin-ajax.php'); ?>",
-									success: function(data) { input.val(data); }
+									url: ajaxurl,
+									type: 'POST',
+									data: {
+										// wp_client_details : client_info,
+										// action: 'save_client_details_form'
+										'action' : 'save_client_details_form',
+        								'client_name': client_name,
+        								'client_email': client_email,
+        								'client_address': client_address,
+									},
+									error: function(error) {
+										alert("Insert Failed" + error);
+										console.log('errror messassfef');
+									},
+									success: function(response) {
+										alert("Insert Success" + response);
+										console.log('suceeeeessd messassfef');
+									}
 								});
 							});
 						});
 					</script>
+					<!-- <script type="text/javascript">
+						$("#adifier_clients_info").on("submit", function (event) {
+
+							event.preventDefault();
+
+							var form= $(this);
+							var ajaxurl = form.data("url");
+
+							var client_info = {
+								client_name: form.find("#client_name").val(),
+								client_email: form.find("#client_email").val(),
+								client_address: form.find("#client_address").val(),
+							}
+
+							if(client_info.client_name === "" || client_info.client_email === "" || client_info.client_address === "") {
+								alert("Fields cannot be blank");
+								return;
+							}
+
+							$.ajax({
+								url: ajaxurl,
+								type: 'POST',
+								data: {
+									wp_client_details : client_info,
+									action: 'save_client_details_form'
+								},
+								error: function(error) {
+									alert("Insert Failed" + error);
+								},
+								success: function(response) {
+									alert("Insert Success" + response);
+								}
+							});
+						});
+					</script> -->
 				</div>
 
 				<?php if( !is_user_logged_in() && $enable_logout_contact == 'yes' ): ?>

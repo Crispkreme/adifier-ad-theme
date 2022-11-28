@@ -1,18 +1,77 @@
 <?php
 
 // just adding the clients details into database
-// if( !function_exists('enqueue_adifier_jquery_form') ){
-// 	function enqueue_adifier_jquery_form(){
-// 		wp_enqueue_script( 'adifier-jquery-plugin', 'https://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js', false );
-// 		wp_enqueue_script( 'adifier-jquery-form', 'https://malsup.github.io/jquery.form.js', false );
-// 	}
-// add_action('wp_enqueue_scripts', 'enqueue_adifier_jquery_form');
-// }
+if( !function_exists('enqueue_adifier_jquery_form') ){
+	function enqueue_adifier_jquery_form(){
+		wp_enqueue_script( 'adifier-jquery-plugin', 'https://code.jquery.com/jquery-3.6.1.js', false );
+	}
+add_action('wp_enqueue_scripts', 'enqueue_adifier_jquery_form');
+}
 // if( !function_exists('adifier_create_client_info') ){
 // 	function adifier_create_client_info(){
 // 		wp_send_json_success( array('$_POST' => $_POST) );
 // 	}
 // add_action('wp_ajax_create_client_info', 'adifier_create_client_info');
+// }
+
+add_action( 'wp_ajax_nopriv_save_client_details_form', 'save_client_details_form' );
+add_action( 'wp_ajax_save_client_details_form', 'save_client_details_form' );
+function save_client_details_form(){
+	global $wpdb;
+	
+	$client_name = sanitize_text_field($_POST['client_name']);
+	$client_email = sanitize_text_field($_POST['client_email']);
+	$client_address = sanitize_text_field($_POST['client_address']);
+	
+	$tableName = 'wp_client_details';
+	$insert_row = $wpdb->insert( 
+		$tableName, 
+		array( 
+			'client_name' => $client_name, 
+			'client_email' => $client_email, 
+			'client_address' => $client_address, 
+		)
+	);
+	// if row inserted in table
+	if($insert_row){
+		// echo json_encode(array('res'=>true, 'message'=>__('New row has been inserted.')));
+		dd('inserted');
+	}else{
+		// echo json_encode(array('res'=>false, 'message'=>__('Something went wrong. Please try again later.')));
+		dd('failed');
+	}
+	wp_die();
+}
+
+// if( !function_exists('save_client_details_form') ) {
+// 	function save_client_details_form() {
+
+// 		global $wpdb;
+
+// 		$client_name = sanitize_text_field($_POST['client_name']);
+// 		$client_email = sanitize_text_field($_POST['client_email']);
+// 		$client_address = sanitize_text_field($_POST['client_address']);
+
+// 		$args = [
+// 			'client_name'=> $client_name,
+// 			'client_email'=>$client_email,
+// 			'client_address'=>$client_address,
+// 		];
+// 		$table = $wpdb->prefix . 'wp_client_details';
+// 		$wpdb->insert($table, $args);
+// 		// $is_post_inserted = wp_insert_post($args);
+	
+// 		if($is_post_inserted) {
+// 			return "success";
+// 		} else {
+// 			return "failed";
+// 		}
+
+// 		die();
+// 	}
+// 	add_action('wp_ajax_save_client_details_form','save_client_details_form');
+// 	add_action('wp_ajax_nopriv_save_save_client_details_form','save_client_details_form');
+
 // }
 
 /* get url by page template */
