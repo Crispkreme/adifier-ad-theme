@@ -1241,4 +1241,35 @@ function adifier_hex2rgba($color, $opacity = false) {
 include( get_theme_file_path( 'includes/classes/menu-walker.class.php' ) );
 include( get_theme_file_path( 'includes/classes/class-tgm-plugin-activation.php' ) );	
 
+// if( !function_exists('save_client_details_form') ){
+// 	function save_client_details_form() {
+
+// 		global $wpdb;
+
+// 		$client_name = sanitize_text_field($_POST['wp_client_details']['client_name']);
+// 		$client_email = sanitize_text_field($_POST['wp_client_details']['client_email']);
+// 		$client_address = sanitize_text_field($_POST['wp_client_details']['client_address']);
+
+// 		$data = array(
+// 			'client_name'=> $client_name,
+// 			'client_email'=>$client_email,
+// 			'client_address'=>$client_address,
+// 		);
+
+// 		$data_table = 'wp_client_details';
+// 		$data_result = $wpdb->insert($data_table, $data, $format=NULL);
+
+// 		if($data_result == 1)
+// 		{
+// 			echo 'submitted';
+// 		} else {
+// 			echo 'failed';
+// 		}
+
+// 		die();
+// 	}
+		
+// 	add_action('wp_ajax_save_client_details_form', 'save_client_details_form');
+// 	add_action('wp_ajax_nopriv_save_client_details_form', 'save_client_details_form');
+// }
 ?>

@@ -285,6 +285,78 @@ ob_end_clean();
 						</form>
 					</div>
 					<script type="text/javascript">
+						// jQuery(function(){
+						// 	jQuery('#adifier_clients_info').submit( function(event){
+						// 		event.preventDefault();
+
+						// 		var form= $(this);
+						// 		var ajaxurl = form.data("data-url");
+						// 		var ajax_action = form.data("action");
+
+						// 		// jQuery.ajax({
+						// 		// 	dataType: "json",
+						// 		// 	type: "POST",
+						// 		// 	data: jQuery("#adifier_clients_info").serialize(),
+						// 		// 	url: ajaxurl,
+						// 		// 	action: ajax_action,
+						// 		// 	success: function(data)
+						// 		// 	{
+						// 		// 		alert('form success');
+						// 		// 	}
+						// 		// });
+
+						// 		var data = {
+						// 			action: ajax_action,
+						// 		};
+						// 		jQuery.post(ajaxurl, data, function(response) {
+						// 			alert('done');
+						// 		});
+						// 	});
+						// }); 
+
+						$("#adifier_clients_info").on("submit", function (e) {
+							e.preventDefault();
+
+							var form = $(this),
+								ajaxurl = form.data('url'),
+							    client_name = form.find('#client_name').val(),
+							    client_email = form.find('#client_email').val(),
+							    client_address = form.find('#client_address').val();
+
+							if(client_name == "" || client_email == "" || client_address == "")
+							{
+								alert('empty');
+								return;
+							}
+
+							$.ajax({
+								url: ajaxurl,
+								type: 'POST',
+								data: {
+									client_name: client_name,
+									client_email: client_email,
+									client_address: client_address,
+									action: 'save_client_details_form'
+								}, 
+
+								error: function(response) {
+									console.log(response);
+									alert('error');
+								},
+								success: function(response) {
+									if(response == 0) 
+									{
+										alert('Please try again, something wrong');
+									} else {
+										alert('Success');
+									}
+									
+								}
+							});
+						});
+
+					</script>
+					<!-- <script type="text/javascript">
 						jQuery(document).ready(function($){
 							$("#adifier_clients_info").on("submit", function (event) {
 
@@ -308,12 +380,8 @@ ob_end_clean();
 									url: ajaxurl,
 									type: 'POST',
 									data: {
-										// wp_client_details : client_info,
+										wp_client_details : client_info,
 										// action: 'save_client_details_form'
-										'action' : 'save_client_details_form',
-        								'client_name': client_name,
-        								'client_email': client_email,
-        								'client_address': client_address,
 									},
 									error: function(error) {
 										alert("Insert Failed" + error);
@@ -326,7 +394,7 @@ ob_end_clean();
 								});
 							});
 						});
-					</script>
+					</script> -->
 					<!-- <script type="text/javascript">
 						$("#adifier_clients_info").on("submit", function (event) {
 
